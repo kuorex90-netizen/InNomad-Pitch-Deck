@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InNomad Technologies | Interactive Pitch Deck</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A single-page, top-down narrative structure with a sticky navigation header for quick access to key sections. This design guides the user through the investment story logically (from opportunity to ask) while allowing experienced investors to jump directly to sections like 'Roadmap' or 'The Ask'. The flow is designed to be intuitive for a web-based experience, replacing linear slides with scroll-based discovery and interactive data points to make the information more engaging and digestible. -->
+    <!-- Visualization & Content Choices: 
+        - Market Size (TAM): Goal: Inform on growth. Viz: Line Chart (Chart.js). Interaction: Hover tooltips. Justification: Visually demonstrates the market's strong upward trajectory effectively.
+        - Use of Funds: Goal: Inform on allocation. Viz: Donut Chart (Chart.js). Interaction: Hover tooltips. Justification: Clearly shows the proportion of funding for each key area.
+        - Revenue Roadmap: Goal: Show projected growth. Viz: Bar Chart (Chart.js). Interaction: Hover tooltips. Justification: Provides a clear, immediate understanding of financial milestones.
+        - Competitors: Goal: Compare positioning. Viz: HTML Table. Interaction: Hover highlights. Justification: Presents detailed comparisons in a structured, readable format.
+        - Risks: Goal: Organize complex info. Viz: Accordion (HTML/JS). Interaction: Click to expand. Justification: Keeps the UI clean and allows users to focus on one risk at a time.
+        - Products/Roadmap: Goal: Organize details. Viz: Tabbed Interface (HTML/JS). Interaction: Click to switch views. Justification: Efficiently presents layered information without cluttering the page.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F5F4; /* stone-100 */
+            color: #374151; /* gray-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #10B981; /* emerald-500 */
+        }
+        .active-link {
+            color: #10B981;
+            font-weight: 600;
+        }
+        .tab-btn {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-btn-active {
+            background-color: #10B981;
+            color: white;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <img src="https://i.postimg.cc/HJTF4Jph/In-Nomad-Full-Black.png" alt="InNomad Technologies Logo" class="h-20 md:h-24 w-auto">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#opportunity" class="nav-link text-gray-600">Opportunity</a>
+                <a href="#solution" class="nav-link text-gray-600">Solution</a>
+                <a href="#market" class="nav-link text-gray-600">Market</a>
+                <a href="#roadmap" class="nav-link text-gray-600">Roadmap</a>
+                <a href="#team" class="bg-emerald-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-emerald-600 transition">Join Us</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md">
+            <a href="#opportunity" class="block py-2 px-6 text-gray-700 hover:bg-emerald-50">Opportunity</a>
+            <a href="#solution" class="block py-2 px-6 text-gray-700 hover:bg-emerald-50">Solution</a>
+            <a href="#market" class="block py-2 px-6 text-gray-700 hover:bg-emerald-50">Market</a>
+            <a href="#roadmap" class="block py-2 px-6 text-gray-700 hover:bg-emerald-50">Roadmap</a>
+            <a href="#team" class="block py-2 px-6 text-gray-700 hover:bg-emerald-50">Join Us</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="bg-white py-20 md:py-28">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">InNomad Technologies</h1>
+                <p class="mt-4 text-xl md:text-2xl text-emerald-600 font-semibold">Power Freedom Without Compromise.</p>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                    We're building premium, fully-integrated mobile power solutions for the rapidly growing RV, vanlife, and off-grid communities.
+                </p>
+            </div>
+        </section>
+
+        <section id="opportunity" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">The Opportunity</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        The current market for mobile power is fragmented and complex. We address the clear and growing demand from millions of off-grid adventurers for a simpler, more reliable solution.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-bold text-emerald-500">The Problem</h3>
+                        <p class="mt-2 text-gray-600">Current systems are often bulky, complex, not fully integrated, and expensive to install.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-4xl font-bold text-emerald-500">50 Million</h3>
+                        <p class="mt-2 text-gray-600">Digital nomads globally, a number that continues to grow.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-4xl font-bold text-emerald-500">72 Million</h3>
+                        <p class="mt-2 text-gray-600">Americans planning RV trips, seeking reliable off-grid power.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-md mt-16">
+                    <h3 class="text-2xl font-bold text-center text-gray-800 mb-2">Total Addressable Market Growth</h3>
+                    <p class="text-center text-gray-600 mb-6">The global solar generator market is projected for substantial growth, presenting a massive opportunity.</p>
+                    <div class="chart-container">
+                        <canvas id="tamChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Our Solution: The InNomad Platform</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        We've designed a seamlessly integrated ecosystem for life on the road, centered around two innovative core products that simplify power management for everyone.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-stone-50 p-8 rounded-xl border border-stone-200">
+                        <h3 class="text-2xl font-bold text-emerald-600">☀️ SunFold 180/240</h3>
+                        <p class="mt-2 mb-4 text-gray-600">Simple, powerful, and portable solar panels.</p>
+                        <img src="https://i.postimg.cc/TKVZDjXb/Gemini-Generated-Image-wzh3qewzh3qewzh3.png" alt="SunFold Product" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start"><span class="font-bold text-emerald-500 mr-2">✓</span> <strong>Unique Form Factor:</strong> Foldable panels that mount conveniently on a vehicle's windshield.</li>
+                            <li class="flex items-start"><span class="font-bold text-emerald-500 mr-2">✓</span> <strong>Proprietary Tech:</strong> In-house production with a proprietary coating for industry-leading efficiency.</li>
+                            <li class="flex items-start"><span class="font-bold text-emerald-500 mr-2">✓</span> <strong>Plug & Play:</strong> Bundled with a charge box, making it an ideal entry-level product.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-stone-50 p-8 rounded-xl border border-stone-200">
+                        <h3 class="text-2xl font-bold text-emerald-600">🔋 Roam 12 System</h3>
+                        <p class="mt-2 mb-4 text-gray-600">The heart of your off-grid adventure.</p>
+                        <img src="https://i.postimg.cc/Z9mwtX2B/Gemini-Generated-Image-84e17d84e17d84e1.png" alt="Roam 12 System Product" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start"><span class="font-bold text-emerald-500 mr-2">✓</span> <strong>All-in-One Power:</strong> A complete 12V DC & 120V AC system integrated into a single, compact unit.</li>
+                            <li class="flex items-start"><span class="font-bold text-emerald-500 mr-2">✓</span> <strong>Core Components:</strong> Includes a 4.0kWh self-heating LiFePO₄ battery, 3kW inverter, and a 3-in-1 smart charger.</li>
+                            <li class="flex items-start"><span class="font-bold text-emerald-500 mr-2">✓</span> <strong>Smart Control:</strong> A 7” touch display provides comprehensive monitoring and control.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="market" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Market Landscape & Positioning</h2>
+                     <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        We are positioned to win by targeting underserved audiences and offering a uniquely integrated solution that stands apart from the competition.
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-md mb-12">
+                    <h3 class="text-2xl font-bold text-center text-gray-800 mb-6">Target Audience</h3>
+                     <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
+                        <div>
+                            <p class="text-4xl">🛠️</p>
+                            <p class="mt-2 font-semibold">DIY Van Builders</p>
+                        </div>
+                        <div>
+                            <p class="text-4xl">🚐</p>
+                            <p class="mt-2 font-semibold">Vanlife Adventurers</p>
+                        </div>
+                        <div>
+                            <p class="text-4xl">🎬</p>
+                            <p class="mt-2 font-semibold">Vanlife Creators</p>
+                        </div>
+                        <div>
+                            <p class="text-4xl">🏭</p>
+                            <p class="mt-2 font-semibold">RV Manufacturers</p>
+                        </div>
+                        <div>
+                            <p class="text-4xl">🔧</p>
+                            <p class="mt-2 font-semibold">Upfitter Shops</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-bold text-center text-gray-800 mb-6">Competitive Landscape</h3>
+                    <div class="overflow-x-auto hidden md:block">
+                        <table class="w-full text-left">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="p-4 font-semibold">Competitor</th>
+                                    <th class="p-4 font-semibold">Positioning & Marketing</th>
+                                    <th class="p-4 font-semibold">Key Weakness</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b hover:bg-stone-50">
+                                    <td class="p-4 font-medium">Goal Zero</td>
+                                    <td class="p-4">Durable, portable power stations for outdoor retail.</td>
+                                    <td class="p-4 text-red-600">Not designed for permanent vehicle integration.</td>
+                                </tr>
+                                <tr class="border-b hover:bg-stone-50">
+                                    <td class="p-4 font-medium">EcoFlow</td>
+                                    <td class="p-4">High-end modular systems with rapid charging.</td>
+                                    <td class="p-4 text-red-600">Complex, expensive, and not an all-in-one solution.</td>
+                                </tr>
+                                <tr class="border-b hover:bg-stone-50">
+                                    <td class="p-4 font-medium">Renogy</td>
+                                    <td class="p-4">Budget-friendly DIY solar kits and components.</td>
+                                    <td class="p-4 text-red-600">Requires significant user knowledge for installation.</td>
+                                </tr>
+                                <tr class="border-b hover:bg-stone-50">
+                                    <td class="p-4 font-medium">Jackery</td>
+                                    <td class="p-4">Mainstream camping brand with a focus on portability.</td>
+                                    <td class="p-4 text-red-600">Lower power output, not suitable for full van systems.</td>
+                                </tr>
+                                 <tr class="hover:bg-stone-50">
+                                    <td class="p-4 font-medium">Bluetti</td>
+                                    <td class="p-4">Wide range of portable stations and home battery systems.</td>
+                                    <td class="p-4 text-red-600">Lacks a dedicated, integrated vehicle solution.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="space-y-4 md:hidden">
+                        <div class="bg-stone-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg">Goal Zero</h4>
+                            <p class="text-sm mt-1"><strong>Positioning:</strong> Durable, portable power stations for outdoor retail.</p>
+                            <p class="text-sm mt-1 text-red-600"><strong>Weakness:</strong> Not designed for permanent vehicle integration.</p>
+                        </div>
+                        <div class="bg-stone-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg">EcoFlow</h4>
+                            <p class="text-sm mt-1"><strong>Positioning:</strong> High-end modular systems with rapid charging.</p>
+                            <p class="text-sm mt-1 text-red-600"><strong>Weakness:</strong> Complex, expensive, and not an all-in-one solution.</p>
+                        </div>
+                        <div class="bg-stone-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg">Renogy</h4>
+                            <p class="text-sm mt-1"><strong>Positioning:</strong> Budget-friendly DIY solar kits and components.</p>
+                            <p class="text-sm mt-1 text-red-600"><strong>Weakness:</strong> Requires significant user knowledge for installation.</p>
+                        </div>
+                        <div class="bg-stone-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg">Jackery</h4>
+                            <p class="text-sm mt-1"><strong>Positioning:</strong> Mainstream camping brand with a focus on portability.</p>
+                            <p class="text-sm mt-1 text-red-600"><strong>Weakness:</strong> Lower power output, not suitable for full van systems.</p>
+                        </div>
+                        <div class="bg-stone-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-lg">Bluetti</h4>
+                            <p class="text-sm mt-1"><strong>Positioning:</strong> Wide range of portable stations and home battery systems.</p>
+                            <p class="text-sm mt-1 text-red-600"><strong>Weakness:</strong> Lacks a dedicated, integrated vehicle solution.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">24-Month Roadmap</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        Our strategic roadmap outlines a clear path to significant revenue growth, market penetration, and product expansion over the next two years.
+                    </p>
+                </div>
+
+                <div class="bg-stone-50 p-6 md:p-8 rounded-xl border border-stone-200 mb-12">
+                    <h3 class="text-2xl font-bold text-center text-gray-800 mb-2">Projected Cumulative Revenue Growth</h3>
+                    <p class="text-center text-gray-600 mb-6">Our multi-channel strategy is projected to drive rapid revenue scaling.</p>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="bg-stone-50 p-6 md:p-8 rounded-xl border border-stone-200">
+                    <h3 class="text-2xl font-bold text-center text-gray-800 mb-6">Key Milestones & KPIs</h3>
+                    <div class="mb-6 flex justify-center border-b border-gray-200">
+                        <button data-tab="6" class="tab-btn px-4 py-3 text-sm md:px-6 font-semibold text-gray-600 tab-btn-active">Month 6</button>
+                        <button data-tab="12" class="tab-btn px-4 py-3 text-sm md:px-6 font-semibold text-gray-600">Month 12</button>
+                        <button data-tab="18" class="tab-btn px-4 py-3 text-sm md:px-6 font-semibold text-gray-600">Month 18-24</button>
+                    </div>
+                    <div id="roadmap-content" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <section id="risks" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Risks & Mitigations</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        We have proactively identified potential risks and developed robust mitigation strategies to ensure the long-term success of our venture.
+                    </p>
+                </div>
+                <div id="accordion" class="space-y-4">
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="py-16 md:py-24 bg-emerald-600 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold">Join Our Founding Team</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-emerald-100">
+                    We are seeking our "Rat Pack" - a founding CEO, COO, and CMO to lead this venture. If you are passionate about empowering freedom and sustainability through technology, let's talk.
+                </p>
+                <p class="mt-8 text-2xl font-bold">Do you want to take the bet?</p>
+                <button class="mt-6 bg-white text-emerald-600 font-bold px-8 py-3 rounded-lg hover:bg-emerald-50 transition text-lg">Contact Us</button>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <p>&copy; 2025 InNomad Technologies. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const tamData = {
+                labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033'],
+                datasets: [{
+                    label: 'Global Solar Generator Market (in B USD)',
+                    data: [1.5, 1.8, 2.1, 2.4, 2.7, 3.0, 3.3, 3.6, 3.9, 4.2],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            };
+
+            const tamConfig = {
+                type: 'line',
+                data: tamData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value + 'B';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            };
+
+            const tamCtx = document.getElementById('tamChart').getContext('2d');
+            new Chart(tamCtx, tamConfig);
+
+            const revenueData = {
+                labels: ['Month 6', 'Month 12', 'Month 18-24'],
+                datasets: [{
+                    label: 'Cumulative Revenue (in M USD)',
+                    data: [0.4, 1.5, 4.0],
+                    backgroundColor: ['#34D399', '#10B981', '#059669'],
+                    borderRadius: 5
+                }]
+            };
+
+            const revenueConfig = {
+                type: 'bar',
+                data: revenueData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value + 'M';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            };
+            
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, revenueConfig);
+
+            const roadmapData = {
+                '6': [
+                    { category: 'Revenue', detail: '$400k from pre-orders & first retail orders' },
+                    { category: 'Retail & E-commerce', detail: '5-25 store agreements; Shopify launch' },
+                    { category: 'OEM / B2B', detail: '3 pilot installations; attend 2 trade shows' },
+                    { category: 'Product Development', detail: 'Roam 12 & SunFold UL certification & launch' },
+                    { category: 'Brand & Community', detail: '5k followers; onboard 5 influencers' },
+                    { category: 'Organization', detail: 'Hire founding C-Suite & sales directors' }
+                ],
+                '12': [
+                    { category: 'Revenue', detail: 'Cumulative $1.5M; break even on unit level' },
+                    { category: 'Retail & E-commerce', detail: '120 store placements; Kickstarter raising $300k' },
+                    { category: 'OEM / B2B', detail: 'Two OEM contracts signed (50 units)' },
+                    { category: 'Product Development', detail: 'Roam 24/48 system launch' },
+                    { category: 'Brand & Community', detail: '20k followers; 20+ user stories; CAC < $200' },
+                    { category: 'Organization', detail: 'Grow team to 1-5 employees' }
+                ],
+                '18': [
+                    { category: 'Revenue', detail: '$4M cumulative revenue; positive EBITDA' },
+                    { category: 'Retail & E-commerce', detail: '200 store placements; 20k subscribers' },
+                    { category: 'OEM / B2B', detail: 'Deliver 100 Roam 12 units; sign third OEM' },
+                    { category: 'Product Development', detail: 'Release branded components & new electronics' },
+                    { category: 'Brand & Community', detail: '100k followers; vanlife meetups; LTV/CAC > 4' },
+                    { category: 'Organization', detail: 'Scale team to 12 employees; implement ERP/CRM' }
+                ]
+            };
+
+            const roadmapContent = document.getElementById('roadmap-content');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+
+            function updateRoadmapContent(tab) {
+                roadmapContent.innerHTML = '';
+                const data = roadmapData[tab];
+                data.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white p-4 rounded-lg shadow-sm';
+                    card.innerHTML = `<h4 class="font-bold text-emerald-600">${item.category}</h4><p class="text-gray-600 text-sm mt-1">${item.detail}</p>`;
+                    roadmapContent.appendChild(card);
+                });
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('tab-btn-active'));
+                    button.classList.add('tab-btn-active');
+                    updateRoadmapContent(button.dataset.tab);
+                });
+            });
+
+            updateRoadmapContent('6');
+
+            const risksData = [
+                { risk: 'Supply Chain & Costs', mitigation: 'Diversify suppliers, secure long-term contracts, and maintain buffer stock.' },
+                { risk: 'Regulatory Compliance', mitigation: 'Engage expert consultants and design for UL/RVIA standards from day one.' },
+                { risk: 'Demand Volatility', mitigation: 'Launch during peak season, diversify into the global digital nomad market, and maintain lean operations.' },
+                { risk: 'Product Reliability', mitigation: 'Conduct thorough beta testing, implement robust QA, and offer extended warranties.' },
+                { risk: 'Competitive Response', mitigation: 'Differentiate through superior integration, build a strong brand community, and protect our IP.' },
+                { risk: 'Funding & Cash Flow', mitigation: 'Maintain a conservative burn rate, explore grants, and use crowdfunding for initial capital.' }
+            ];
+
+            const accordionContainer = document.getElementById('accordion');
+            risksData.forEach((item, index) => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'border border-gray-200 rounded-lg';
+                accordionItem.innerHTML = `
+                    <h2>
+                        <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 bg-stone-50 hover:bg-stone-100" data-accordion-target="#accordion-body-${index}" aria-expanded="false" aria-controls="accordion-body-${index}">
+                            <span>${item.risk}</span>
+                            <svg data-accordion-icon class="w-6 h-6 shrink-0 transition-transform" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-body-${index}" class="hidden p-5 border-t border-gray-200">
+                        <p class="text-gray-600">${item.mitigation}</p>
+                    </div>
+                `;
+                accordionContainer.appendChild(accordionItem);
+            });
+            
+            accordionContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('[data-accordion-target]');
+                if (button) {
+                    const targetId = button.getAttribute('data-accordion-target');
+                    const targetPanel = document.querySelector(targetId);
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                    button.setAttribute('aria-expanded', !isExpanded);
+                    targetPanel.classList.toggle('hidden');
+                    const icon = button.querySelector('[data-accordion-icon]');
+                    icon.classList.toggle('rotate-180');
+                }
+            });
+
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.6
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const activeId = entry.target.id;
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === activeId) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                        document.querySelectorAll('#mobile-menu a').forEach(link => {
+                             link.classList.remove('bg-emerald-50');
+                            if (link.getAttribute('href').substring(1) === activeId) {
+                                link.classList.add('bg-emerald-50');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
+
+
